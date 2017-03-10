@@ -10,7 +10,7 @@
 
 @implementation DTParallaxTableView
 
-#define NAVIGATION_BAR_HEIGHT 0
+#define NAVIGATION_BAR_HEIGHT 60
 #define SHADOW_TAG 101
 
 -(id)initWithFrame:(CGRect)frame {

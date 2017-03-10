@@ -20,7 +20,7 @@
     [self setInitParam];
     
     NSLog(@"%@",APP_DELEGATE.arrUserlist);
-    
+    view_navigation.hidden = TRUE;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 }
@@ -43,6 +43,11 @@
     }
     
     searchbar.text = lbl_navigationTitle.text;
+    [[UITextField appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class]]] setBackgroundColor:[UIColor greenColor]];
+    
+    [[UITextField appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class]]] setTextColor:[UIColor blackColor]];
+
+    
     
     if (APP_DELEGATE.isloginuser)
     {
@@ -193,6 +198,23 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (scrollView.contentOffset.y > 140)
+    {
+        if (!isshow)
+        {
+            isshow = TRUE;
+            [APP_DELEGATE animateWithShow:YES withView:view_navigation];
+        }
+    }
+    else
+    {
+        isshow = FALSE;
+        [APP_DELEGATE animateWithShow:NO withView:view_navigation];
+    }
+}
+/*
 #pragma mark - scrollView Delegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -219,21 +241,6 @@
     [self updateBarButtonItems:(1 - framePercentageHidden)];
     self.previousScrollViewYOffset = scrollOffset;
     
-    /*
-    if (scrollView.contentOffset.y > 140)
-    {
-        if (!isshow)
-        {
-            isshow = TRUE;
-            [APP_DELEGATE animateWithShow:YES withView:lbl_navigationTitle];
-        }
-    }
-    else
-    {
-        isshow = FALSE;
-        [APP_DELEGATE animateWithShow:NO withView:lbl_navigationTitle];
-    }
-     */
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -287,7 +294,7 @@
         [self stoppedScrolling];
     }
 }
-
+*/
 
 - (IBAction)search:(id)sender {
 }
@@ -411,7 +418,12 @@
     }
     else if (changeImage == ChangeCoverPicture)
     {
+        DTParallaxHeaderView *headerView = [[DTParallaxHeaderView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, 200) withImage:scaledImage withTabBar:nil];
         
+        [_tbl setDTHeaderView:headerView];
+        _tbl.showShadow = NO;
+        
+        [_tbl reloadData];
     }
     else if (changeImage == ChangeOppUserPicture)
     {

@@ -38,7 +38,9 @@
 #import "FollowingFollowersViewController.h"
 #import "FollowTagsViewController.h"
 #import "TagsDetailsViewController.h"
-
+#import "PaperViewController.h"
+#import "Story.h"
+#import "MMViewController.h"
 
 
 
@@ -70,6 +72,7 @@
 
 
 #pragma mark - Importing Framework
+#import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import <CoreLocation/CoreLocation.h>
 #import <Foundation/Foundation.h>

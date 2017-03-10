@@ -7,6 +7,8 @@
 //
 
 #import "CustomTabbarViewController.h"
+#import "MMViewController.h"
+#import "MMRootViewController.h"
 
 @interface CustomTabbarViewController ()
 
@@ -111,11 +113,12 @@
     {
         isActivity = TRUE;
         
-        ActivityViewController *currentObje = [self.storyboard instantiateViewControllerWithIdentifier:@"ActivityViewController"];
+        MMRootViewController *currentObje = [self.storyboard instantiateViewControllerWithIdentifier:@"MMRootViewController"];
         currentObje.view.frame = CGRectMake(WIDTH*2, 0, WIDTH, scrl.frame.size.height);
         [self addChildViewController:currentObje];
         [scrl addSubview:currentObje.view];
         [currentObje didMoveToParentViewController:self];
+        
     }
     
     CGPoint scrollPoint = CGPointMake(WIDTH*2, 0);
