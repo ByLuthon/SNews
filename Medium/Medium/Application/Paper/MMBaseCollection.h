@@ -9,7 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "MMSmallLayout.h"
 #import "MMLargeLayout.h"
-@interface MMBaseCollection : UICollectionViewController<UIGestureRecognizerDelegate>{
+#import "MMRootViewController.h"
+
+@interface MMBaseCollection : UICollectionViewController<UIGestureRecognizerDelegate>
+{
     UIPanGestureRecognizer *panGestureRecognizer;
     UIPinchGestureRecognizer *pichGestureRecogonizer;
     BOOL toBeExpandedFlag,transitioningFlag,changedFlag,hasActiveInteraction;
@@ -20,12 +23,13 @@
     
 }
 
-@property (nonatomic)MMSmallLayout *smallLayout;
+@property (nonatomic) MMSmallLayout *smallLayout;
 @property (nonatomic) MMLargeLayout *largeLayout;
 
 
 @property (nonatomic) CGFloat initialPinchDistance;
 @property (nonatomic) CGPoint initialPinchPoint;
+
 - (UICollectionViewController*)nextViewControllerAtPoint:(CGPoint)point;
 
 @end

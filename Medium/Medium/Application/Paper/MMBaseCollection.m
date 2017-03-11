@@ -25,16 +25,19 @@
         toBeExpandedFlag=true;
         transitioningFlag=false;
         changedFlag=false;
+        
         _smallLayout=[[MMSmallLayout alloc] init];
         _smallLayout=(MMSmallLayout*)layout;
         _largeLayout=[[MMLargeLayout alloc] init];
+        
         [self gestureInit];
         
     }
     return self;
 }
 
--(void)gestureInit{
+-(void)gestureInit
+{
     panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
     panGestureRecognizer.delegate = self;
     panGestureRecognizer.minimumNumberOfTouches = 1;
@@ -52,14 +55,23 @@
     
     
 }
--(void)changeLayout:(UITapGestureRecognizer*)sender{
+-(void)changeLayout:(UITapGestureRecognizer*)sender
+{
+    MMRootViewController *obj = [self.storyboard instantiateViewControllerWithIdentifier:@"MMRootViewController"];
     
-    if(toBeExpandedFlag){
-            [self.collectionView setCollectionViewLayout:_largeLayout animated:YES completion:nil];
-        toBeExpandedFlag=NO;
- 
+    if(toBeExpandedFlag)
+    {
+        [self.collectionView setCollectionViewLayout:_largeLayout animated:YES completion:nil];
+        toBeExpandedFlag = NO;
+        
+        self.collectionView.pagingEnabled = TRUE;
+        
+        [obj setCollectionType:TRUE];
     }
-   
+    else
+    {
+        [obj setCollectionType:FALSE];
+    }
     
 }
 -(void)handlePan:(UIPanGestureRecognizer *)sender{
@@ -164,13 +176,14 @@
         
         
         //update position only when point.y is between initialPoint.y and targety
-        NSLog(@"%f", progress);
+        //NSLog(@"%f", progress);
         if ((point.y - initialPanPoint.y) * (point.y - targetY) <= 0) {
             
            
             
         }
-        if(progress<=1.1){
+        if(progress<=1.1)
+        {
             [self updateWithProgress:progress];
         }
        
@@ -362,13 +375,18 @@
 - (UICollectionViewTransitionLayout *)collectionView:(UICollectionView *)collectionView
                         transitionLayoutForOldLayout:(UICollectionViewLayout *)fromLayout newLayout:(UICollectionViewLayout *)toLayout
 {
+    NSLog(@"%@",fromLayout);
+    NSLog(@"%@",toLayout);
+
+    
     HATransitionLayout *transitionLayout = [[HATransitionLayout alloc] initWithCurrentLayout:fromLayout nextLayout:toLayout];
     return transitionLayout;
 }
 
 #pragma mark Gesture
 
--(void)handlePinch:(UIPinchGestureRecognizer *)sender{
+-(void)handlePinch:(UIPinchGestureRecognizer *)sender
+{
     // here we want to end the transition interaction if the user stops or finishes the pinch gesture
      if (sender.state==UIGestureRecognizerStateCancelled || sender.state==UIGestureRecognizerStateEnded){
         

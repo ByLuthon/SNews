@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MMRootViewController : UIViewController
+@interface MMRootViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource>
 //@property (nonatomic)BOOL toogle;
 @property (nonatomic) NSArray *recipes;
-
+-(void)setCollectionType:(BOOL)isLarge;
 @end

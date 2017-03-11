@@ -11,11 +11,21 @@
 #import "MMSmallLayout.h"
 #import "MMLargeLayout.h"
 #import "PaperBuble.h"
-@interface MMRootViewController ()<UIGestureRecognizerDelegate,UITableViewDataSource,UITableViewDelegate>{
+#import "MMCollectionViewCell.h"
+
+@interface MMRootViewController ()<UIGestureRecognizerDelegate,UITableViewDataSource,UITableViewDelegate>
+{
     BOOL toogle;
     PaperBuble *bubble;
     UIImageView *addfrd,*noti,*msg;
+    
+    UIPageControl *pageControl;
+    MMLargeLayout *LargeLayout;
+    
+    UICollectionView *collectionView;
 }
+
+
 @property (weak, nonatomic) IBOutlet UIView *view_navigation;
 @property (nonatomic) MMBaseCollection *baseController;
 @property (nonatomic, assign) NSInteger slide;
@@ -23,34 +33,63 @@
 @property (nonatomic, strong) UIImageView *topImage;
 @property (nonatomic, strong) UIImageView *reflected;
 @property (nonatomic, strong) NSArray *galleryImages;
+
+
 @end
 
 @implementation MMRootViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     toogle=YES;
     // Do any additional setup after loading the view.
     MMSmallLayout *smallLayout = [[MMSmallLayout alloc] init];
     self.baseController=[[MMBaseCollection alloc] initWithCollectionViewLayout:smallLayout];
     
+    //self.baseController.collectionView.userInteractionEnabled = FALSE;
     
+    /*
+     MMLargeLayout *smallLayout = [[MMLargeLayout alloc] init];
+     self.baseController=[[MMBaseCollection alloc] initWithCollectionViewLayout:smallLayout];
+     self.baseController.collectionView.pagingEnabled = TRUE;
+     */
+    
+    self.baseController.collectionView.frame = CGRectMake(0, 60 ,self.baseController.collectionView.frame.size.width, self.baseController.collectionView.frame.size.height);
     [self.view addSubview:self.baseController.collectionView];
+    //self.baseController.collectionView.userInteractionEnabled = FALSE;
+    
+    LargeLayout = [[MMLargeLayout alloc] init];
+    
     
     _galleryImages = @[@"one.jpg", @"two.jpg", @"three.png", @"five.jpg", @"one.jpg"];
     _slide = 0;
     self.recipes=@[@""];
     
     // Init mainView
-    _mainView = [[UIView alloc] initWithFrame:self.view.bounds];
+    //_mainView = [[UIView alloc] initWithFrame:self.view.bounds];
+    _mainView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height-240)];
     _mainView.clipsToBounds = YES;
     _mainView.layer.cornerRadius = 4;
+    
+    collectionView=[[UICollectionView alloc] initWithFrame:self.baseController.collectionView.frame collectionViewLayout:LargeLayout];
+    [collectionView registerClass:[MMCollectionViewCell class] forCellWithReuseIdentifier:@"CELL_ID"];
+    
+    [collectionView setDataSource:self];
+    [collectionView setDelegate:self];
+    collectionView.pagingEnabled = TRUE;
+    [_mainView addSubview:collectionView];
+    
+    // self.baseController.collectionView.delegate = self;
     [self.view insertSubview:_mainView belowSubview:self.baseController.collectionView];
+    
     
     // ImageView on top
     _topImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, [[UIScreen mainScreen] bounds].size.height-256)];
     _reflected = [[UIImageView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(_topImage.bounds), self.view.frame.size.width, self.view.frame.size.height/2)];
-    [_mainView addSubview:_topImage];
+    
+    // [_mainView addSubview:_topImage];
+    
     [_mainView addSubview:_reflected];
     
     _topImage.contentMode=UIViewContentModeScaleAspectFill;
@@ -83,73 +122,8 @@
     [_topImage addSubview:perfectPixelContent];
     
     
-    // Label logo
-    UILabel *logo = [[UILabel alloc] initWithFrame:CGRectMake(15, 12, 100, 0)];
-    logo.backgroundColor = [UIColor clearColor];
-    logo.textColor = [UIColor whiteColor];
-    logo.font = [UIFont fontWithName:@"Helvetica-Bold" size:22];
-    logo.text = @"MMPaper";
-    [logo sizeToFit];
-    // Label Shadow
-    [logo setClipsToBounds:NO];
-    [logo.layer setShadowOffset:CGSizeMake(0, 0)];
-    [logo.layer setShadowColor:[[UIColor blackColor] CGColor]];
-    [logo.layer setShadowRadius:1.0];
-    [logo.layer setShadowOpacity:0.6];
-    [_mainView addSubview:logo];
-    
-    
-    // Label Title
-    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(15, logo.frame.origin.y + CGRectGetHeight(logo.frame) + 8, 290, 0)];
-    title.backgroundColor = [UIColor clearColor];
-    title.textColor = [UIColor whiteColor];
-    title.font = [UIFont fontWithName:@"Helvetica-Bold" size:13];
-    title.text = @"Mukesh Mandora";
-    [title sizeToFit];
-    // Label Shadow
-    [title setClipsToBounds:NO];
-    [title.layer setShadowOffset:CGSizeMake(0, 0)];
-    [title.layer setShadowColor:[[UIColor blackColor] CGColor]];
-    [title.layer setShadowRadius:1.0];
-    [title.layer setShadowOpacity:0.6];
-    [_mainView addSubview:title];
-    
-    
-    // Label SubTitle
-    UILabel *subTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, title.frame.origin.y + CGRectGetHeight(title.frame), 290, 0)];
-    subTitle.backgroundColor = [UIColor clearColor];
-    subTitle.textColor = [UIColor whiteColor];
-    subTitle.font = [UIFont fontWithName:@"Helvetica" size:13];
-    subTitle.text = @"Welcome to SNEWS";
-    subTitle.lineBreakMode = NSLineBreakByWordWrapping;
-    subTitle.numberOfLines = 0;
-    [subTitle sizeToFit];
-    // Label Shadow
-    [subTitle setClipsToBounds:NO];
-    [subTitle.layer setShadowOffset:CGSizeMake(0, 0)];
-    [subTitle.layer setShadowColor:[[UIColor blackColor] CGColor]];
-    [subTitle.layer setShadowRadius:1.0];
-    [subTitle.layer setShadowOpacity:0.6];
-    [_mainView addSubview:subTitle];
-    
-    
     // First Load
     [self changeSlide];
-    
-    // Loop gallery - fix loop: http://bynomial.com/blog/?p=67
-    NSTimer *timer = [NSTimer timerWithTimeInterval:5.0f target:self selector:@selector(changeSlide) userInfo:nil repeats:YES];
-    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-    
-    //    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    //    [button setBackgroundImage:[UIImage imageNamed:@"Tones-50"] forState:UIControlStateNormal];
-    //    [button addTarget:self
-    //               action:@selector(aMethod:)
-    //     forControlEvents:UIControlEventTouchUpInside];
-    ////    [button setTitle:@"Show View" forState:UIControlStateNormal];
-    //    button.frame = CGRectMake(180.0, 12, 25, 25);
-    //
-    //    button.tintColor=[UIColor whiteColor];
-    //    [self.view addSubview:button];
     
     
     noti=[[UIImageView alloc] initWithFrame:CGRectMake(self.view.frame.size.width-50, 20, 25, 25)];
@@ -187,18 +161,35 @@
     tapChat.delegate=self;
     msg.tag = 3;
     
+    pageControl = [[UIPageControl alloc] init];
+    pageControl.frame = CGRectMake(0, [[UIScreen mainScreen] bounds].size.height - 255  , [[UIScreen mainScreen] bounds].size.width, 20);
+    pageControl.numberOfPages = 20;
+    pageControl.pageIndicatorTintColor = [UIColor whiteColor];
+    pageControl.currentPageIndicatorTintColor = [UIColor darkGrayColor];
+    pageControl.currentPage = 0;
+    [_mainView addSubview:pageControl];
+    //[_mainView bringSubviewToFront:pageControl];
+    
+    
+    //pageControl.hidden = TRUE;
+    
     
     [self.view bringSubviewToFront:_view_navigation];
-    
 }
 
 
--(void)tapBubble:(UIGestureRecognizer *)sender{
+-(void)tapBubble:(UIGestureRecognizer *)sender
+{
     NSInteger tag=sender.view.tag;
-    if(tag==1){
+    
+    //pageControl.currentPage = tag;
+    
+    if(tag==1)
+    {
         [self toogleHelpAction:self];
     }
-    else if (tag==2){
+    else if (tag==2)
+    {
         [self actionBut2:self];
     }
     else{
@@ -208,12 +199,125 @@
 }
 
 
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    MMCollectionViewCell *cell = (MMCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"CELL_ID" forIndexPath:indexPath];
+    //    cell.backgroundColor = [UIColor whiteColor];
+    //    cell.layer.cornerRadius = 4;
+    //    cell.clipsToBounds = YES;
+    //
+    //    UIImageView *backgroundView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"2"]];
+    //    cell.backgroundView = backgroundView;
+    [cell setIndex:indexPath.row withSize:LargeLayout.itemSize];
+    
+    
+    return cell;
+}
 
 
--(void)aMethod:(id)sender{
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return 20;
+}
+
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
+    return 1;
+}
+
+/*
+ - (void)collectionView:(UICollectionView *)colleview willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+ {
+ 
+ NSLog(@"%li",(long)indexPath.row);
+ 
+ if(colleview == collectionView)
+ {
+ 
+ if(fmod(indexPath.row, 3) == 1 && indexPath.row != 1){
+ 
+ if (scrollDirection == ScrollDirectionLeft)
+ {
+ [self.collectionView2 setContentOffset:CGPointMake(currScrollXPos+300, 0) animated:YES];
+ currScrollXPos = currScrollXPos+300;
+ }
+ 
+ if (scrollDirection == ScrollDirectionRight)
+ {
+ [self.collectionView2 setContentOffset:CGPointMake(currScrollXPos-300, 0) animated:YES];
+ currScrollXPos = currScrollXPos-300;
+ }
+ }
+ }
+ 
+ }
+ */
+- (void)collectionView:(UICollectionView *)collection willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    NSLog(@"%li",(long)indexPath.row);
+    
+    if(collection == collectionView)
+    {
+        
+        if(fmod(indexPath.row, 3) == 1 && indexPath.row != 1)
+        {
+            /*
+            if (scrollDirection == ScrollDirectionLeft) {
+                [self.collectionView2 setContentOffset:CGPointMake(currScrollXPos+300, 0) animated:YES];
+                currScrollXPos = currScrollXPos+300;
+            }
+            if (scrollDirection == ScrollDirectionRight) {
+                [self.collectionView2 setContentOffset:CGPointMake(currScrollXPos-300, 0) animated:YES];
+                currScrollXPos = currScrollXPos-300;
+            }
+             */
+        }
+        
+    }
+}
+- (UICollectionViewTransitionLayout *)collectionView:(UICollectionView *)collectionView
+                        transitionLayoutForOldLayout:(UICollectionViewLayout *)fromLayout newLayout:(UICollectionViewLayout *)toLayout
+{
+    //NSLog(@"%@",fromLayout);
+    //NSLog(@"%@",toLayout);
+    
+    return nil;
+}
+
+-(void)setCollectionType:(BOOL)isLarge
+{
+    NSLog(@"%d",isLarge);
+    //    [self.view bringSubviewToFront:_mainView];
+
+}
+-(void)aMethod:(id)sender
+{
     NSLog(@"Hello");
 }
 
+#pragma mark - UIScrollVewDelegate for UIPageControl
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    CGFloat pageWidth = collectionView.frame.size.width;
+    float currentPage = collectionView.contentOffset.x / pageWidth;
+    
+    if (0.0f != fmodf(currentPage, 1.0f))
+    {
+        pageControl.currentPage = currentPage + 1;
+    }
+    else
+    {
+        pageControl.currentPage = currentPage;
+    }
+    
+    NSIndexPath *nextItem = [NSIndexPath indexPathForItem:pageControl.currentPage inSection:0];
+    
+    [collectionView scrollToItemAtIndexPath:nextItem atScrollPosition:UICollectionViewScrollPositionNone animated:YES];
+    
+    NSLog(@"finishPage: %ld", (long)pageControl.currentPage);
+    
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -322,9 +426,7 @@
         
         
     }
-    
     [bubble.tableView reloadData];
-    
 }
 
 - (IBAction)actionbut3:(id)sender {

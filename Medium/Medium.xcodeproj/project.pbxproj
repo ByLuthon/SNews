@@ -452,6 +452,7 @@
 		9A7F7F991E5C364400D6FEF7 /* ic_mail_24dp.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A7F7F981E5C364400D6FEF7 /* ic_mail_24dp.png */; };
 		9A7F7F9B1E5C364D00D6FEF7 /* ic_mail_24dp.png@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A7F7F9A1E5C364D00D6FEF7 /* ic_mail_24dp.png@3x.png */; };
 		9A7F7F9D1E5C365400D6FEF7 /* ic_mail_24dp.png@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A7F7F9C1E5C365400D6FEF7 /* ic_mail_24dp.png@2x.png */; };
+		9AA447641E73D1BB006BDF46 /* MMCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AA447621E73D1BB006BDF46 /* MMCollectionViewCell.xib */; };
 		9AA96FAC1E488D5000EAF323 /* Cell_Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AA96FAA1E488D5000EAF323 /* Cell_Activity.m */; };
 		9AA96FAD1E488D5000EAF323 /* Cell_Activity.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AA96FAB1E488D5000EAF323 /* Cell_Activity.xib */; };
 		9AA96FAF1E488F5600EAF323 /* profile-image-display.png in Resources */ = {isa = PBXBuildFile; fileRef = 9AA96FAE1E488F5600EAF323 /* profile-image-display.png */; };
@@ -584,7 +585,6 @@
 		9AD2683F1E54650000F5A32D /* UIImage-Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AD268391E54650000F5A32D /* UIImage-Extension.m */; };
 		9AD2686F1E5493BF00F5A32D /* IntroViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AD2686A1E5493BF00F5A32D /* IntroViewController.m */; };
 		9AD268701E5493BF00F5A32D /* Login_SignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AD2686C1E5493BF00F5A32D /* Login_SignupViewController.m */; };
-		9AD268711E5493BF00F5A32D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AD2686E1E5493BF00F5A32D /* ViewController.m */; };
 		9AE36F5E1E729CE60096C3AD /* PaperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AE36F5D1E729CE60096C3AD /* PaperViewController.m */; };
 		9AE36F611E729E750096C3AD /* Story.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AE36F601E729E750096C3AD /* Story.m */; };
 		9AE36F761E72C9A10096C3AD /* CustomPaperCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AE36F751E72C9A10096C3AD /* CustomPaperCell.m */; };
@@ -1156,6 +1156,7 @@
 		9A7F7F981E5C364400D6FEF7 /* ic_mail_24dp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_mail_24dp.png; sourceTree = "<group>"; };
 		9A7F7F9A1E5C364D00D6FEF7 /* ic_mail_24dp.png@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_mail_24dp.png@3x.png"; sourceTree = "<group>"; };
 		9A7F7F9C1E5C365400D6FEF7 /* ic_mail_24dp.png@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_mail_24dp.png@2x.png"; sourceTree = "<group>"; };
+		9AA447621E73D1BB006BDF46 /* MMCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MMCollectionViewCell.xib; path = ../../Home/cell/MMCollectionViewCell.xib; sourceTree = "<group>"; };
 		9AA96FA91E488D5000EAF323 /* Cell_Activity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cell_Activity.h; sourceTree = "<group>"; };
 		9AA96FAA1E488D5000EAF323 /* Cell_Activity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Cell_Activity.m; sourceTree = "<group>"; };
 		9AA96FAB1E488D5000EAF323 /* Cell_Activity.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Cell_Activity.xib; sourceTree = "<group>"; };
@@ -1320,8 +1321,6 @@
 		9AD2686A1E5493BF00F5A32D /* IntroViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntroViewController.m; sourceTree = "<group>"; };
 		9AD2686B1E5493BF00F5A32D /* Login_SignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Login_SignupViewController.h; sourceTree = "<group>"; };
 		9AD2686C1E5493BF00F5A32D /* Login_SignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Login_SignupViewController.m; sourceTree = "<group>"; };
-		9AD2686D1E5493BF00F5A32D /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		9AD2686E1E5493BF00F5A32D /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		9AE36F5C1E729CE60096C3AD /* PaperViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaperViewController.h; sourceTree = "<group>"; };
 		9AE36F5D1E729CE60096C3AD /* PaperViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaperViewController.m; sourceTree = "<group>"; };
 		9AE36F5F1E729E750096C3AD /* Story.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Story.h; sourceTree = "<group>"; };
@@ -2481,8 +2480,6 @@
 				9AD2686A1E5493BF00F5A32D /* IntroViewController.m */,
 				9AD2686B1E5493BF00F5A32D /* Login_SignupViewController.h */,
 				9AD2686C1E5493BF00F5A32D /* Login_SignupViewController.m */,
-				9AD2686D1E5493BF00F5A32D /* ViewController.h */,
-				9AD2686E1E5493BF00F5A32D /* ViewController.m */,
 			);
 			path = RootViewController;
 			sourceTree = "<group>";
@@ -2514,8 +2511,8 @@
 				9AE36FE61E72F5800096C3AD /* MMRootViewController.m */,
 				9AE36F781E72ECF50096C3AD /* MMViewController.h */,
 				9AE36F791E72ECF50096C3AD /* MMViewController.m */,
-				9AE36F7C1E72EDDF0096C3AD /* MMBaseCollection.m */,
 				9AE36F7B1E72EDD50096C3AD /* MMBaseCollection.h */,
+				9AE36F7C1E72EDDF0096C3AD /* MMBaseCollection.m */,
 			);
 			path = Paper;
 			sourceTree = "<group>";
@@ -2527,6 +2524,7 @@
 				9AE36F961E72F2D60096C3AD /* HATransitionLayout.m */,
 				9AE36F7F1E72EE0F0096C3AD /* MMCollectionViewCell.h */,
 				9AE36F801E72EE0F0096C3AD /* MMCollectionViewCell.m */,
+				9AA447621E73D1BB006BDF46 /* MMCollectionViewCell.xib */,
 				9AE36F811E72EE0F0096C3AD /* MMLargeLayout.h */,
 				9AE36F821E72EE0F0096C3AD /* MMLargeLayout.m */,
 				9AE36F831E72EE0F0096C3AD /* MMSmallLayout.h */,
@@ -2976,6 +2974,7 @@
 				9A1A1E981E4858C100AA8EA6 /* ic_bookmark_outline_white_24dp@3x.png in Resources */,
 				9AC2FECB1E4C7E70006C4F40 /* ZSSimage@2x.png in Resources */,
 				9A2853A31E43148F0080AEDE /* abc_ic_voice_search_api_mtrl_alpha.png in Resources */,
+				9AA447641E73D1BB006BDF46 /* MMCollectionViewCell.xib in Resources */,
 				9A2476AA1E7136F400BD17B3 /* birthday@2x.png in Resources */,
 				9A6CB9331E446467001CD7C3 /* appicon_splash.png in Resources */,
 				9A2853D91E43148F0080AEDE /* ic_schedule_grey600_24dp.png in Resources */,
@@ -3590,7 +3589,6 @@
 				9AB779F41E437C05006895DE /* FollowViewController.m in Sources */,
 				9AF9C1C11E4309BC004819E5 /* JVFloatLabeledTextField.m in Sources */,
 				9AE36FF11E72F62E0096C3AD /* CustomShapeLayer.m in Sources */,
-				9AD268711E5493BF00F5A32D /* ViewController.m in Sources */,
 				9AF9C1B91E4309B2004819E5 /* ISEmojiView.m in Sources */,
 				9AF9C1A21E43096C004819E5 /* UzysAssetsPickerController.m in Sources */,
 				9AE36FDC1E72F2EA0096C3AD /* POPCustomAnimation.mm in Sources */,

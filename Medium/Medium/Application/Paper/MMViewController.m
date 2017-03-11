@@ -134,6 +134,8 @@
     // First Load
     [self changeSlide];
     
+    [self setPageControl];
+    
     // Loop gallery - fix loop: http://bynomial.com/blog/?p=67
     NSTimer *timer = [NSTimer timerWithTimeInterval:5.0f target:self selector:@selector(changeSlide) userInfo:nil repeats:YES];
     [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
@@ -156,6 +158,8 @@
     
     UIPageControl * pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, HEIGHT-270, pagescrollView.frame.size.width, 20)];
     pageControl.numberOfPages = pagescrollView.contentSize.width/pagescrollView.frame.size.width;
+    pageControl.pageIndicatorTintColor = [UIColor whiteColor];
+    pageControl.currentPageIndicatorTintColor = [UIColor darkGrayColor];
     [pageControl addTarget:self action:@selector(changePage:) forControlEvents:UIControlEventValueChanged];
     
 //    [self.view addSubview:pagescrollView];

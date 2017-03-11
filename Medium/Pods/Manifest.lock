@@ -28,7 +28,7 @@ PODS:
   - GSKStretchyHeaderView (1.0.0)
   - IQKeyboardManager (4.0.8)
   - JTSImageViewController (1.5.1)
-  - libPhoneNumber-iOS (0.9.2)
+  - libPhoneNumber-iOS (0.9.4)
   - MBProgressHUD (0.9.2)
   - MFSideMenu (0.5.5)
   - RSKImageCropper (1.6.0)
@@ -62,7 +62,7 @@ SPEC CHECKSUMS:
   GSKStretchyHeaderView: daba8f035eaade6326d05ee2a382be714bb019c0
   IQKeyboardManager: 1a8189fa153bf09044355ee0ad36826f6767e7f7
   JTSImageViewController: 1f8ce1cc93dab0d0af8e53badeea7528560cfec9
-  libPhoneNumber-iOS: a8bffdec18c37728360f6771fe021302f1e0b497
+  libPhoneNumber-iOS: 63bab980d1fc9783d82d955800ac9d7c1d81fde3
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   MFSideMenu: 268122e6894f2747fc3a2b48578100b232506c60
   RSKImageCropper: 6903235c7a8a79acb1e1f3490e2c911b858f8208
@@ -70,6 +70,6 @@ SPEC CHECKSUMS:
   UITextView+Placeholder: 77680995fcdd07c3f52ec92fe1150874a2ac89ff
   VENTokenField: 5a19b838fb97f040e3d4c93f584b4adeaf3fc1ee
 
-PODFILE CHECKSUM: 93f341dc9b7493557bd96a8df6eaa8d86768b92b
+PODFILE CHECKSUM: 646dfc72ccc9f9d8d1c640f2a564dffc086c5f8d
 
 COCOAPODS: 1.0.1

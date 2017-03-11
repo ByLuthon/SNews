@@ -10,6 +10,7 @@
 #import "MMViewController.h"
 #import "MMRootViewController.h"
 
+
 @interface CustomTabbarViewController ()
 
 @end
@@ -118,7 +119,6 @@
         [self addChildViewController:currentObje];
         [scrl addSubview:currentObje.view];
         [currentObje didMoveToParentViewController:self];
-        
     }
     
     CGPoint scrollPoint = CGPointMake(WIDTH*2, 0);
