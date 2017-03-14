@@ -50,6 +50,8 @@
         
         self = [arrayOfViews objectAtIndex:0];
         
+        [APP_DELEGATE setBorderToView:self withBorderWidth:1.0 radious:4.0 color:[UIColor lightGrayColor]];
+        
     }
     return self;
 }

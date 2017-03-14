@@ -521,7 +521,7 @@
     }
     else if (TableMethod == SEARCH_Stories)
     {
-        return 509;
+        return 480;
     }
     else if (TableMethod == SEARCH_People)
     {

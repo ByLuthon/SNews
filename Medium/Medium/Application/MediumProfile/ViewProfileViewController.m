@@ -187,7 +187,7 @@
     }
     else if (tableView == tbl_recommends)
     {
-        return 509;
+        return 480;
     }
     else if (tableView == tbl_responces)
     {

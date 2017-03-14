@@ -44,39 +44,49 @@
     panGestureRecognizer.maximumNumberOfTouches = 1;
     [self.collectionView addGestureRecognizer:panGestureRecognizer];
     
-     pichGestureRecogonizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
+    pichGestureRecogonizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
     [self.collectionView addGestureRecognizer:pichGestureRecogonizer];
     
     
     UITapGestureRecognizer *tapLayout=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeLayout:)];
     [self.collectionView addGestureRecognizer:tapLayout];
     tapLayout.delegate=self;
-
+    
     
     
 }
 -(void)changeLayout:(UITapGestureRecognizer*)sender
 {
-    MMRootViewController *obj = [self.storyboard instantiateViewControllerWithIdentifier:@"MMRootViewController"];
+    //MMRootViewController *obj = [self.storyboard instantiateViewControllerWithIdentifier:@"MMRootViewController"];
     
     if(toBeExpandedFlag)
     {
         [self.collectionView setCollectionViewLayout:_largeLayout animated:YES completion:nil];
         toBeExpandedFlag = NO;
-        
         self.collectionView.pagingEnabled = TRUE;
-        
-        [obj setCollectionType:TRUE];
     }
     else
     {
-        [obj setCollectionType:FALSE];
+        /*
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+
+        HomeDetailsViewController *move = [storyboard instantiateViewControllerWithIdentifier:@"HomeDetailsViewController"];
+        move.isfromResponces = FALSE;
+        move.getDict = [APP_DELEGATE.arrUserlist objectAtIndex:0];
+        [self.navigationController pushViewController:move animated:YES];
+         */
     }
+    NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
+    [dic setObject:[NSNumber numberWithBool:toBeExpandedFlag] forKey:@"isExpandable"];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"setCollectionTypeNotify" object:nil userInfo:dic];
+    
+    dic = nil;
+    
     
 }
--(void)handlePan:(UIPanGestureRecognizer *)sender{
-    
-    
+-(void)handlePan:(UIPanGestureRecognizer *)sender
+{
     CGPoint point = [sender locationInView:sender.view];
     CGPoint velocity = [sender velocityInView:sender.view];
     CGPoint translation = [sender translationInView:sender.view];
@@ -86,7 +96,7 @@
     
     CGFloat progress = ABS(point.y - initialPanPoint.y)/ABS(targetY - initialPanPoint.y);//MAX(MIN(ABS(point.y - initialPanPoint.y)/ABS(targetY - initialPanPoint.y),1.0),0.0);
     
-//    if(abs(velocity.y) >  abs(velocity.x)) {
+    //    if(abs(velocity.y) >  abs(velocity.x)) {
     
     
     
@@ -118,15 +128,15 @@
         
         targetY = tallHeight - hRatio * (toBeExpandedFlag ? tallHeight : shortHeight);
         
-
+        
         
         [self.collectionView startInteractiveTransitionToCollectionViewLayout:(toBeExpandedFlag?_largeLayout:_smallLayout) completion:^(BOOL completed, BOOL finished) {
-//            hasActiveInteraction=NO;
+            //            hasActiveInteraction=NO;
             [self startGesture];
             
         }];
         transitioningFlag = true;
-
+        
     }
     else if (sender.state==UIGestureRecognizerStateCancelled || sender.state==UIGestureRecognizerStateEnded){
         if (!changedFlag) {//without this guard, collectionview behaves strangely
@@ -134,10 +144,10 @@
             return;
         }
         
-       
         
-//        [self stopGesture];
-       
+        
+        //        [self stopGesture];
+        
         if ([self getTransitionLayout]){
             
             
@@ -145,27 +155,35 @@
             BOOL success = [self getTransitionLayout].transitionProgress > 0.5;
             CGFloat yToReach;
             if (success) {
-                 [self resetPopAnimation:sender.view];
+                [self resetPopAnimation:sender.view];
                 [self.collectionView finishInteractiveTransition];
+                
                 toBeExpandedFlag = !toBeExpandedFlag;
+                
+                NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
+                [dic setObject:[NSNumber numberWithBool:toBeExpandedFlag] forKey:@"isExpandable"];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"setCollectionTypeNotify" object:nil userInfo:dic];
+                
+                dic = nil;
 
                 yToReach = targetY;
-              
             }
-            else{
-                 [self resetPopAnimation:sender.view];
+            else
+            {
+                [self resetPopAnimation:sender.view];
                 [self.collectionView cancelInteractiveTransition];
                 yToReach = initialPanPoint.y;
                 
-               
+                
             }
         }
         else{
-          
+            
             [self resetPopAnimation:sender.view];
         }
         
-
+        
     }
     else if (sender.state==UIGestureRecognizerStateChanged){
         if (!transitioningFlag) {//if not transitoning, return
@@ -179,45 +197,45 @@
         //NSLog(@"%f", progress);
         if ((point.y - initialPanPoint.y) * (point.y - targetY) <= 0) {
             
-           
+            
             
         }
         if(progress<=1.1)
         {
             [self updateWithProgress:progress];
         }
-       
+        
         else{
-//            if(transitioningFlag){
-//                POPSpringAnimation *anim = [POPSpringAnimation animationWithPropertyNamed:kPOPViewScaleXY];
-//                anim.name = @"scale2x";
-//                anim.springSpeed=5;
-//                anim.springBounciness=1;
-//                anim.toValue = [NSValue valueWithCGSize:CGSizeMake(progress, progress)];
-//                
-//                [sender.view pop_addAnimation:anim forKey:@"scale2x"];
-//
-//            }
-          
-           
+            //            if(transitioningFlag){
+            //                POPSpringAnimation *anim = [POPSpringAnimation animationWithPropertyNamed:kPOPViewScaleXY];
+            //                anim.name = @"scale2x";
+            //                anim.springSpeed=5;
+            //                anim.springBounciness=1;
+            //                anim.toValue = [NSValue valueWithCGSize:CGSizeMake(progress, progress)];
+            //
+            //                [sender.view pop_addAnimation:anim forKey:@"scale2x"];
+            //
+            //            }
+            
+            
         }
-
+        
         
     }
     
-   
     
-//        }
-
+    
+    //        }
+    
 }
 
 -(void)resetPopAnimation:(UIView *)view{
-//    POPSpringAnimation *anim = [POPSpringAnimation animationWithPropertyNamed:kPOPViewScaleXY];
-//    anim.toValue = [NSValue valueWithCGPoint:CGPointMake(1, 1)];
-//    anim.springBounciness = 0;
-//    anim.springSpeed = 1;
-//    
-//    [view pop_addAnimation:anim forKey:@"scale"];
+    //    POPSpringAnimation *anim = [POPSpringAnimation animationWithPropertyNamed:kPOPViewScaleXY];
+    //    anim.toValue = [NSValue valueWithCGPoint:CGPointMake(1, 1)];
+    //    anim.springBounciness = 0;
+    //    anim.springSpeed = 1;
+    //
+    //    [view pop_addAnimation:anim forKey:@"scale"];
 }
 
 -(void)finishInteractiveTransition:(CGFloat)progress inDuration:(CGFloat)duration withSucess:(BOOL)success{
@@ -227,8 +245,8 @@
         
     }
     else{
-//        [self updateWithProgress:[self getTransitionLayout].transitionProgress];
-//        [self finishUpInteraction:success];
+        //        [self updateWithProgress:[self getTransitionLayout].transitionProgress];
+        //        [self finishUpInteraction:success];
     }
 }
 -(BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer{
@@ -243,7 +261,9 @@
         CGPoint pos = [pan locationInView:pan.view];
         
         //if touch point of out of range of cell, return false
-        if (toBeExpandedFlag) {
+        if (toBeExpandedFlag)
+        {
+
             if(CGRectGetHeight(self.collectionView.frame) - _smallLayout.itemSize.height > pos.y) {
                 return false;
             }
@@ -265,7 +285,8 @@
 
 
 
--(void)updatePositionData:(CGPoint)point withProgess:(CGFloat)progress{
+-(void)updatePositionData:(CGPoint)point withProgess:(CGFloat)progress
+{
     CGFloat tallHeight = _largeLayout.itemSize.height;
     CGFloat shortHeight = _smallLayout.itemSize.height;
     
@@ -275,13 +296,13 @@
     
     initialPanPoint.y = tallHeight - hRatio * (toBeExpandedFlag ? _smallLayout.itemSize.height:_largeLayout.itemSize.height);
     targetY = tallHeight - hRatio * (toBeExpandedFlag ? _largeLayout.itemSize.height:_smallLayout.itemSize.height);
-
 }
 
--(UICollectionViewTransitionLayout *)getTransitionLayout{
+-(UICollectionViewTransitionLayout *)getTransitionLayout
+{
     
-//    UICollectionViewTransitionLayout *layout = [[UICollectionViewTransitionLayout alloc] init];
-//    layout=(UICollectionViewTransitionLayout *)self.collectionView.collectionViewLayout;;
+    //    UICollectionViewTransitionLayout *layout = [[UICollectionViewTransitionLayout alloc] init];
+    //    layout=(UICollectionViewTransitionLayout *)self.collectionView.collectionViewLayout;;
     
     if ([self.collectionView.collectionViewLayout isKindOfClass:[UICollectionViewTransitionLayout class]]) {
         return (UICollectionViewTransitionLayout *)self.collectionView.collectionViewLayout ;
@@ -291,20 +312,34 @@
     }
 }
 
--(void)updateWithProgress:(CGFloat)progress{
+-(void)updateWithProgress:(CGFloat)progress
+{
     //collectionViewLayout may be changed between flowLayout and transitionLayout
     //at any time. therefore, this guard is needed
-   
-    if ([self getTransitionLayout]){
+    
+    if (toBeExpandedFlag)
+    {
+        NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
+        [dic setObject:[NSNumber numberWithBool:!toBeExpandedFlag] forKey:@"isExpandable"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"setCollectionTypeNotify" object:nil userInfo:dic];
+        dic = nil;
+    }
+
+    //NSLog(@"%f",progress);
+    
+    if ([self getTransitionLayout])
+    {
         [self getTransitionLayout].transitionProgress = progress;
     }
 }
 
--(void)startGesture{
+-(void)startGesture
+{
     panGestureRecognizer.enabled=true;
 }
 
--(void)stopGesture{
+-(void)stopGesture
+{
     panGestureRecognizer.enabled=false;
 }
 
@@ -313,15 +348,17 @@
         return;
     }
     
-    if (success) {
+    if (success)
+    {
         [self updateWithProgress:1.0];
         [self.collectionView finishInteractiveTransition];
         transitioningFlag = false;
         toBeExpandedFlag = !toBeExpandedFlag;
     }
-    else{
+    else
+    {
         [self updateWithProgress:0.0];
-      
+        
         [self.collectionView cancelInteractiveTransition];
         transitioningFlag = false;
     }
@@ -347,14 +384,14 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     MMCollectionViewCell *cell = (MMCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:CELL_ID forIndexPath:indexPath];
-//    cell.backgroundColor = [UIColor whiteColor];
-//    cell.layer.cornerRadius = 4;
-//    cell.clipsToBounds = YES;
-//    
-//    UIImageView *backgroundView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"2"]];
-//    cell.backgroundView = backgroundView;
+    //    cell.backgroundColor = [UIColor whiteColor];
+    //    cell.layer.cornerRadius = 4;
+    //    cell.clipsToBounds = YES;
+    //
+    //    UIImageView *backgroundView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"2"]];
+    //    cell.backgroundView = backgroundView;
     [cell setIndex:indexPath.row withSize:(toBeExpandedFlag?_smallLayout.itemSize:_largeLayout.itemSize)];
-
+    
     
     return cell;
 }
@@ -377,7 +414,7 @@
 {
     NSLog(@"%@",fromLayout);
     NSLog(@"%@",toLayout);
-
+    
     
     HATransitionLayout *transitionLayout = [[HATransitionLayout alloc] initWithCurrentLayout:fromLayout nextLayout:toLayout];
     return transitionLayout;
@@ -388,7 +425,7 @@
 -(void)handlePinch:(UIPinchGestureRecognizer *)sender
 {
     // here we want to end the transition interaction if the user stops or finishes the pinch gesture
-     if (sender.state==UIGestureRecognizerStateCancelled || sender.state==UIGestureRecognizerStateEnded){
+    if (sender.state==UIGestureRecognizerStateCancelled || sender.state==UIGestureRecognizerStateEnded){
         
         
         if ([self getTransitionLayout]){
@@ -405,7 +442,7 @@
             else{
                 [self resetPopAnimation:sender.view];
                 [self.collectionView cancelInteractiveTransition];
-
+                
             }
         }
         else{
@@ -415,7 +452,7 @@
         
         
     }
-
+    
     else if (sender.numberOfTouches == 2)
     {
         // here we expect two finger touch
@@ -435,14 +472,14 @@
         if (sender.state == UIGestureRecognizerStateBegan)
         {
             
-             changedFlag = false;
+            changedFlag = false;
             // start the pinch in our out
             if (transitioningFlag)
             {
                 self.initialPinchDistance = distance;
                 self.initialPinchPoint = point;
                 transitioningFlag= YES;    // the transition is in active motion
-//                [self.delegate interactionBeganAtPoint:point];
+                //                [self.delegate interactionBeganAtPoint:point];
                 [self.collectionView startInteractiveTransitionToCollectionViewLayout:(toBeExpandedFlag?_largeLayout:_smallLayout) completion:^(BOOL completed, BOOL finished) {
                     //            hasActiveInteraction=NO;
                     [self startGesture];
@@ -458,7 +495,7 @@
             if (sender.state == UIGestureRecognizerStateChanged)
             {
                 
-                 changedFlag = true;
+                changedFlag = true;
                 // update the progress of the transtition as the user continues to pinch
                 CGFloat delta = distance - self.initialPinchDistance;
                 CGFloat offsetX = point.x - self.initialPinchPoint.x;
@@ -482,6 +519,6 @@
             }
         }
     }
-
+    
 }
 @end

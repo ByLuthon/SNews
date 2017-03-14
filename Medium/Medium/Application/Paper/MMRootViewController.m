@@ -42,7 +42,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    toogle=YES;
+    
+    toogle = YES;
+    
     // Do any additional setup after loading the view.
     MMSmallLayout *smallLayout = [[MMSmallLayout alloc] init];
     self.baseController=[[MMBaseCollection alloc] initWithCollectionViewLayout:smallLayout];
@@ -61,7 +63,6 @@
     
     LargeLayout = [[MMLargeLayout alloc] init];
     
-    
     _galleryImages = @[@"one.jpg", @"two.jpg", @"three.png", @"five.jpg", @"one.jpg"];
     _slide = 0;
     self.recipes=@[@""];
@@ -72,7 +73,7 @@
     _mainView.clipsToBounds = YES;
     _mainView.layer.cornerRadius = 4;
     
-    collectionView=[[UICollectionView alloc] initWithFrame:self.baseController.collectionView.frame collectionViewLayout:LargeLayout];
+    collectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(0, 65, WIDTH, 440) collectionViewLayout:LargeLayout];
     [collectionView registerClass:[MMCollectionViewCell class] forCellWithReuseIdentifier:@"CELL_ID"];
     
     [collectionView setDataSource:self];
@@ -126,40 +127,7 @@
     [self changeSlide];
     
     
-    noti=[[UIImageView alloc] initWithFrame:CGRectMake(self.view.frame.size.width-50, 20, 25, 25)];
-    noti.image=[[UIImage imageNamed:@"Tones-50"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    noti.tintColor=[UIColor whiteColor];
-    [noti setUserInteractionEnabled:YES];
-    [self.view addSubview:noti];
-    
-    addfrd=[[UIImageView alloc] initWithFrame:CGRectMake(noti.frame.origin.x-50, 20, 25, 25)];
-    addfrd.image=[[UIImage imageNamed:@"Group-50"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    addfrd.tintColor=[UIColor whiteColor];
-    [addfrd setUserInteractionEnabled:YES];
-    [self.view addSubview:addfrd];
-    
-    msg=[[UIImageView alloc] initWithFrame:CGRectMake(addfrd.frame.origin.x-50, 20, 25, 25)];
-    msg.image=[[UIImage imageNamed:@"Talk-50"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    msg.tintColor=[UIColor whiteColor];
-    [msg setUserInteractionEnabled:YES];
-    [self.view addSubview:msg];
-    
-    UITapGestureRecognizer *tapNoti=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapBubble:)];
-    [noti addGestureRecognizer:tapNoti];
-    tapNoti.delegate=self;
-    
-    noti.tag = 1;
-    
-    UITapGestureRecognizer *tapFrd=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapBubble:)];
-    [addfrd addGestureRecognizer:tapFrd];
-    tapFrd.delegate=self;
-    addfrd.tag = 2;
-    
-    
-    UITapGestureRecognizer *tapChat=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapBubble:)];
-    [msg addGestureRecognizer:tapChat];
-    tapChat.delegate=self;
-    msg.tag = 3;
+
     
     pageControl = [[UIPageControl alloc] init];
     pageControl.frame = CGRectMake(0, [[UIScreen mainScreen] bounds].size.height - 255  , [[UIScreen mainScreen] bounds].size.width, 20);
@@ -168,15 +136,23 @@
     pageControl.currentPageIndicatorTintColor = [UIColor darkGrayColor];
     pageControl.currentPage = 0;
     [_mainView addSubview:pageControl];
-    //[_mainView bringSubviewToFront:pageControl];
+    [_mainView bringSubviewToFront:pageControl];
     
     
     //pageControl.hidden = TRUE;
     
-    
+    [self.view bringSubviewToFront:_mainView];
     [self.view bringSubviewToFront:_view_navigation];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(collectiontype:) name:@"setCollectionTypeNotify" object:nil];
+
+    [super viewWillAppear:animated];
+}
 
 -(void)tapBubble:(UIGestureRecognizer *)sender
 {
@@ -199,6 +175,35 @@
 }
 
 
+-(void)collectiontype:(NSNotification *)notify
+{
+    NSLog(@"Notify%@",notify.userInfo);
+    
+    [self setCollectionType:[[notify.userInfo objectForKey:@"isExpandable"] boolValue]];
+}
+
+-(void)setCollectionType:(BOOL)isLarge
+{
+    NSLog(@"isLarge%d",isLarge);
+    //    [self.view bringSubviewToFront:_mainView];
+    
+    if (isLarge)
+    {
+        [self.view bringSubviewToFront:_mainView];
+        self.baseController.collectionView.pagingEnabled = FALSE;
+    }
+    else
+    {
+        [self.view sendSubviewToBack:_mainView];
+        self.baseController.collectionView.pagingEnabled = TRUE;
+    }
+}
+-(void)aMethod:(id)sender
+{
+    NSLog(@"Hello");
+}
+#pragma mark - UICollectionView Delegate
+
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     MMCollectionViewCell *cell = (MMCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"CELL_ID" forIndexPath:indexPath];
@@ -218,7 +223,12 @@
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return 20;
 }
-
+- (CGSize)collectionView:(UICollectionView *)collectionView
+                  layout:(UICollectionViewLayout  *)collectionViewLayout
+  sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return CGSizeMake(WIDTH, 440); // as per your cell size
+}
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
@@ -262,14 +272,14 @@
         if(fmod(indexPath.row, 3) == 1 && indexPath.row != 1)
         {
             /*
-            if (scrollDirection == ScrollDirectionLeft) {
-                [self.collectionView2 setContentOffset:CGPointMake(currScrollXPos+300, 0) animated:YES];
-                currScrollXPos = currScrollXPos+300;
-            }
-            if (scrollDirection == ScrollDirectionRight) {
-                [self.collectionView2 setContentOffset:CGPointMake(currScrollXPos-300, 0) animated:YES];
-                currScrollXPos = currScrollXPos-300;
-            }
+             if (scrollDirection == ScrollDirectionLeft) {
+             [self.collectionView2 setContentOffset:CGPointMake(currScrollXPos+300, 0) animated:YES];
+             currScrollXPos = currScrollXPos+300;
+             }
+             if (scrollDirection == ScrollDirectionRight) {
+             [self.collectionView2 setContentOffset:CGPointMake(currScrollXPos-300, 0) animated:YES];
+             currScrollXPos = currScrollXPos-300;
+             }
              */
         }
         
@@ -283,18 +293,13 @@
     
     return nil;
 }
-
--(void)setCollectionType:(BOOL)isLarge
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"%d",isLarge);
-    //    [self.view bringSubviewToFront:_mainView];
-
+    HomeDetailsViewController *move = [self.storyboard instantiateViewControllerWithIdentifier:@"HomeDetailsViewController"];
+    move.isfromResponces = FALSE;
+    move.getDict = [APP_DELEGATE.arrUserlist objectAtIndex:0];
+    [self.navigationController pushViewController:move animated:YES];
 }
--(void)aMethod:(id)sender
-{
-    NSLog(@"Hello");
-}
-
 #pragma mark - UIScrollVewDelegate for UIPageControl
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -484,7 +489,7 @@
     UILabel *label = [[UILabel alloc] init];
     [label setTextAlignment:NSTextAlignmentLeft];
     [label setFrame:CGRectMake(18, 10, 300, 20)];
-    label.textColor=[UIColor blackColor];
+    label.textColor=[UIColor whiteColor];
     label.font=[UIFont fontWithName:@"HelveticaNeue" size:20];
     
     if(bubble.button1==noti){

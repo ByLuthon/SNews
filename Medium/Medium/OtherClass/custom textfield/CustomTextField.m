@@ -8,7 +8,7 @@
 
 #import "CustomTextField.h"
 
-IB_DESIGNABLE
+//IB_DESIGNABLE
 @implementation CustomTextField
 
 @synthesize padding;

@@ -8,7 +8,7 @@
 
 #import "CustomButton.h"
 
-IB_DESIGNABLE
+//IB_DESIGNABLE
 @implementation CustomButton
 
 @dynamic borderColor,borderWidth,cornerRadius;
